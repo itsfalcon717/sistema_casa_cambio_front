@@ -1,0 +1,103 @@
+<div class="w-full mx-auto sm:mx-0" *transloco="let t">
+  <div class="mt-2 text-2xl font-extrabold tracking-tight leading-tight">{{ t('cta.titu_nueva') }}</div>
+
+  <form class="mt-8" [formGroup]="fg">
+    <mat-form-field class="w-full fuse-mat-dense" *ngIf="usuario.idTipo== 1">
+      <mat-label>{{ t('cta.enti_banc') }}</mat-label>
+      <mat-select placeholder="{{t('cta.entidad')}}" [formControlName]="'idEntidadBancaria'">
+        <mat-option *ngFor="let item of tipoEntidad" [value]="item.id">{{ item.nombre }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="w-full fuse-mat-dense" *ngIf="usuario.idTipo == 2">
+      <mat-label>{{ t('cta.enti_banc') }}</mat-label>
+      <input id="email" matInput [formControlName]="'entidad'" placeholder="{{t('cta.banca')}}" />
+    </mat-form-field>
+    <mat-form-field class="w-full fuse-mat-dense">
+      <mat-label>{{ t('cta.pais') }}</mat-label>
+      <mat-select placeholder="{{t('cta.selc.pais')}}" [formControlName]="'idPais'">
+        <mat-option *ngFor="let item of pais" [value]="item.id">{{ item.nombre }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="w-full fuse-mat-dense">
+      <mat-label>{{ t('cta.tipo') }}</mat-label>
+      <mat-select
+        placeholder="{{t('cta.selec.tipo')}}"
+        [formControlName]="'idTipoPro'"
+        (ngModelChange)="selectTipoProv($event)"
+      >
+        <mat-option *ngFor="let item of tipoProv" [value]="item.id">{{ item.nombre }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="w-full fuse-mat-dense">
+      <mat-label>{{ t('cta.tip_cuent') }}</mat-label>
+      <mat-select placeholder="Selecciona un Tipo" [formControlName]="'idTipo'">
+        <mat-option *ngFor="let item of tipoCuenta" [value]="item.id">{{ item.nombre }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="w-full fuse-mat-dense">
+      <mat-label>{{ t('cta.moneda_fact') }}</mat-label>
+      <mat-select placeholder="Selecciona un tipo" formControlName="idTipoMoneda">
+        <mat-option *ngFor="let item of currency" [value]="item.id">{{ item.nombre }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- <mat-form-field class="w-full fuse-mat-dense" *ngIf="fg.get('idTipoPro').value == 2">
+      <mat-label>{{ t('cta.moneda_fact') }}</mat-label>
+      <input id="email" matInput [formControlName]="'moneda'" placeholder="Moneda" />
+    </mat-form-field> -->
+    <span style="color: red;font-size: 0.7rem;font-weight: bold;">({{ t('info.cta_1') }})</span>
+    <mat-form-field class="w-full fuse-mat-dense">
+      <mat-label>
+          <label for="">{{ t('cta.n_cuenta') }}</label>
+      </mat-label>
+      <input id="email" matInput [formControlName]="'cuenta'" mask="9999999999999999" placeholder="{{t('cta.n_cuenta')}}" />
+    </mat-form-field>
+
+    <mat-form-field class="w-full fuse-mat-dense" *ngIf="flg_tipoProveedor==1">
+      <mat-label>{{ t('cta.cci') }}</mat-label>
+      <input id="email" matInput [formControlName]="'cci'" placeholder="N° CCI" />
+      <mat-error *ngIf="fg.get('cci')?.invalid">
+        {{ getCuentaErrorMessage() }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="w-full fuse-mat-dense" *ngIf="flg_tipoProveedor!=1">
+      <mat-label>{{ t('cta.swif') }}</mat-label>
+      <input id="email" matInput [formControlName]="'swif'" placeholder="N° Swif" />
+      <mat-error *ngIf="fg.get('swif')?.invalid">
+        {{ getMessageCuenta() }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="w-full fuse-mat-dense" *ngIf="flg_tipoProveedor!=1">
+      <mat-label>{{ t('cta.aba') }}</mat-label>
+      <input id="email" matInput [formControlName]="'aba'" placeholder="N° aba" />
+      <mat-error *ngIf="fg.get('aba')?.invalid">
+        {{ getMessageCuenta() }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="w-full fuse-mat-dense" *ngIf="flg_tipoProveedor!=1">
+      <mat-label>{{ t('cta.iban') }}</mat-label>
+      <input id="email" matInput [formControlName]="'iban'" placeholder="N° iban" />
+      <mat-error *ngIf="fg.get('iban')?.invalid">
+        {{ getMessageCuenta() }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-full fuse-mat-dense">
+      <mat-label>{{ t('cta.contac') }}</mat-label>
+      <input id="email" matInput [formControlName]="'contacto'" placeholder="{{ t('cta.contac') }}" />
+    </mat-form-field>
+
+    <button
+      class="fuse-mat-button-large w-full mt-6"
+      mat-flat-button
+      [color]="'primary'"
+      [disabled]="fg.invalid || fg.disabled"
+      (click)="doRegister()"
+    >
+      <span *ngIf="!fg.disabled">
+        {{ flg_edit ? t('cta.actua') : t('cta.crear') }}
+      </span>
+      <mat-progress-spinner *ngIf="fg.disabled" [diameter]="24" [mode]="'indeterminate'"></mat-progress-spinner>
+    </button>
+  </form>
+</div>

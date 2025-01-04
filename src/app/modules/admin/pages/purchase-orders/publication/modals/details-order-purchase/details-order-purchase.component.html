@@ -1,0 +1,205 @@
+<div class="w-full" *transloco="let t">
+  <div class="w-full mx-auto sm:mx-0">
+    <button 
+      mat-icon-button 
+      class="absolute top-2 right-2 z-10" 
+      aria-label="Cerrar" 
+      color="warn"
+      (click)="closeModal()">
+      <mat-icon>close</mat-icon>
+    </button>
+    <div class="mt-2 text-2xl font-extrabold tracking-tight leading-tight">{{ t('pOrders.Detail.ordTitleDetalle') }}</div>
+  
+    <form class="mt-8 pb-2" [formGroup]="fg">
+      <div class="mat-grid-list m-0" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px">
+        <div class="flex items-center gap-2">
+          <label  class="col-form-label font-semibold w-64 mb-4"> {{ t('pOrders.nro_solped') }}: </label>
+          <mat-form-field class="w-full fuse-mat-dense">
+            <input id="nroSolped" matInput  placeholder="-" formControlName="solped" />
+          </mat-form-field>
+        </div>
+        <div class="flex items-center gap-2">
+          <label for="estado" class="col-form-label font-semibold w-64 mb-4"> {{ t('pOrders.Detail.ordDetEstado') }}: </label>
+          <mat-form-field class="w-full fuse-mat-dense" >
+            <mat-select id="estado" placeholder="Selecciona un tipo" formControlName="estado">
+              <mat-option *ngFor="let item of combos" [value]="item.id">
+                {{ item.nombre }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+       
+      </div>
+  
+      <div class="mat-grid-list m-0" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px">
+         <div class="flex items-center gap-2">
+          <label  class="col-form-label font-semibold w-64 mb-4"> {{ t('pOrders.Detail.ordDetmumRegistro') }}: </label>
+          <mat-form-field class="w-full fuse-mat-dense">
+            <input id="nroSolped" matInput  placeholder="-" formControlName="mumRegistro" />
+          </mat-form-field>
+        </div>
+        <div class="flex items-center gap-2">
+          <label  class="col-form-label font-semibold w-64 mb-4">{{ t('pOrders.Detail.ordDetversion') }}: </label>
+          <mat-form-field class="w-full fuse-mat-dense">
+            <input  matInput  placeholder="-" formControlName="version"/>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="mat-grid-list m-0" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px">
+       <div class="flex items-center gap-2">
+         <label  class="col-form-label font-semibold w-64 mb-4">{{ t('pOrders.Detail.ordDetrucProveedor') }}: </label>
+         <mat-form-field class="w-full fuse-mat-dense">
+           <input  matInput  placeholder="-" formControlName="rucProveedor"/>
+         </mat-form-field>
+       </div>
+       <div class="flex items-center gap-2">
+         <label  class="col-form-label font-semibold w-64 mb-4"> {{ t('pOrders.Detail.ordDetfPublicacion') }}: </label>
+         <mat-form-field class="w-full fuse-mat-dense">
+           <input  matInput  placeholder="-" formControlName="fPublicacion"/>
+         </mat-form-field>
+       </div>
+     </div>
+      <div class="mat-grid-list m-0" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px">
+        <div class="flex items-center gap-2">
+          <label  class="col-form-label font-semibold w-64 mb-4"> {{ t('pOrders.Detail.ordDetrzSocial') }}: </label>
+          <mat-form-field class="w-full fuse-mat-dense">
+            <input id="nroSolped" matInput  placeholder="-" formControlName="rzSocial" />
+          </mat-form-field>
+        </div>
+        <div class="flex items-center gap-2">
+          <label  class="col-form-label font-semibold w-64 mb-4" > {{ t('pOrders.Detail.ordDetfOrden') }}: </label>
+          <mat-form-field class="w-full fuse-mat-dense">
+            <input  matInput  placeholder="-" formControlName="fOrden"/>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="mat-grid-list m-0" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px">
+        <div class="flex items-center gap-2">
+          <label  class="col-form-label font-semibold w-64 mb-4"> {{ t('pOrders.Detail.ordDetpago') }}: </label>
+          <mat-form-field class="w-full fuse-mat-dense">
+            <input id="nroSolped" matInput  placeholder="-" formControlName="pago" />
+          </mat-form-field>
+        </div>
+        <div class="flex items-center gap-2">
+          <label  class="col-form-label font-semibold w-64 mb-4">{{ t('pOrders.Detail.ordDetfEntrega') }}:</label>
+          <mat-form-field class="w-full fuse-mat-dense">
+            <input  matInput  placeholder="-" formControlName="fEntrega"/>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="mat-grid-list m-0" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px">
+        <div class="flex items-center gap-2">
+          <label  class="col-form-label font-semibold w-64 mb-4"> {{ t('pOrders.Detail.ordDetcPago') }}: </label>
+          <mat-form-field class="w-full fuse-mat-dense">
+            <input id="nroSolped" matInput  placeholder="-" formControlName="cPago" />
+          </mat-form-field>
+        </div>
+        <div class="flex items-center gap-2">
+          <label  class="col-form-label font-semibold w-64 mb-4">{{ t('pOrders.Detail.ordDetfVigencia') }}:</label>
+          <mat-form-field class="w-full fuse-mat-dense">
+            <input  matInput  placeholder="-" formControlName="fVigencia"/>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="mat-grid-list m-0" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px">
+          <div class="flex items-center gap-2">
+            <label  class="col-form-label font-semibold w-64 mb-4">{{ t('pOrders.Detail.ordnRecepcion') }}:</label>
+            <mat-form-field class="w-full fuse-mat-dense">
+              <textarea matInput  placeholder="-" rows="3" formControlName="nRecepcion"></textarea>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col gap-0 ">
+            <div class="flex items-center gap-1">
+              <label  class="col-form-label font-semibold w-44 mb-4">{{ t('pOrders.Detail.ordDetsubTotal') }}:</label>
+              <mat-form-field class="w-1/3 fuse-mat-dense">
+                <input id="nroSolped" matInput  placeholder="-" formControlName="subTotal" class="text-right" />
+              </mat-form-field> <span class="flex items-center justify-center w-8 font-semibold mb-4">{{tipoMoneda}}</span>
+            </div>
+        
+            <div class="flex items-center gap-1 ">
+              <label  class="col-form-label font-semibold w-44 mb-4">{{ t('pOrders.Detail.ordDetinpuesto') }}:</label>
+              <mat-form-field class="w-1/3 fuse-mat-dense">
+                <input id="nroSolped" matInput  placeholder="-" formControlName="inpuesto"  class="text-right"/> 
+              </mat-form-field> <span class="flex items-center justify-center w-8 font-semibold mb-4">{{tipoMoneda}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="mat-grid-list m-0" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px">
+          <div class="flex items-center gap-2">
+            <label  class="col-form-label font-semibold w-64 mb-4">{{ t('pOrders.Detail.ordDetobservacion') }}:</label>
+            <mat-form-field class="w-full fuse-mat-dense">
+              <textarea matInput  placeholder="-" rows="3" formControlName="observacion"></textarea>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col gap-4 m-0">
+            <div class="flex items-center gap-1">
+              <label  class="col-form-label font-semibold w-44 mb-4">{{ t('pOrders.Detail.ordDettotalIGV') }}:</label>
+              <mat-form-field class="w-1/3 fuse-mat-dense">
+                <input id="nroSolped" matInput  placeholder="-" formControlName="totalIGV" class="text-right"/>
+              </mat-form-field>
+              <span class="flex items-center justify-center w-8 font-semibold mb-4">{{tipoMoneda}}</span>
+            </div>
+          </div>
+        </div>
+        
+    </form>
+  
+    <div class="p-0 mt-4">
+      <div class="flex justify-between items-center mb-0">
+        <h2 class="text-lg font-semibold">{{ t('pOrders.Detail.ordDetDetalle') }}:</h2>
+        <mat-form-field class="w-1/3 fuse-mat-dense" >
+          <input matInput placeholder="Buscar..." [(ngModel)]="filterValue" (keyup)="applyFilter()">
+        </mat-form-field>
+      </div>
+      <div class="max-h-50 overflow-y-auto border border-gray-300 rounded-md">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full">
+          <ng-container matColumnDef="item">
+            <th mat-header-cell *matHeaderCellDef class="text-left">Item</th>
+            <td mat-cell *matCellDef="let element">{{ element.item }}</td>
+          </ng-container>
+          <ng-container matColumnDef="codigo">
+            <th mat-header-cell *matHeaderCellDef class="text-left">
+              {{ t('pOrders.Detail.ordDetCodProducto') }}:
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.codigo }}</td>
+          </ng-container>
+          <ng-container matColumnDef="id_UnidadInv">
+            <th mat-header-cell *matHeaderCellDef class="text-left">
+              {{ t('pOrders.Detail.ordDetUMedida') }}:
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.id_UnidadInv }}</td>
+          </ng-container>
+          <ng-container matColumnDef="cantidad">
+            <th mat-header-cell *matHeaderCellDef class="text-left">
+              {{ t('pOrders.Detail.ordDetCantidad') }}:
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.cantidad }}</td>
+          </ng-container>
+          <ng-container matColumnDef="precio">
+            <th mat-header-cell *matHeaderCellDef class="text-left">
+              {{ t('pOrders.Detail.ordDetPrecioUnitario') }}:
+            </th>
+            <td mat-cell *matCellDef="let element" class="text-right">{{ element.precio  }}</td>
+          </ng-container>
+          <ng-container matColumnDef="importe">
+            <th mat-header-cell *matHeaderCellDef class="text-left">
+              {{ t('pOrders.Detail.ordDetPrecioTotal') }}:
+            </th>
+            <td mat-cell *matCellDef="let element" class="text-right">{{ element.importe }}</td>
+          </ng-container>
+          <ng-container matColumnDef="observaciones">
+            <th mat-header-cell *matHeaderCellDef class="text-left">
+              {{ t('pOrders.Detail.ordDetObservaciones') }}:
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.observaciones }}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+      
+    </div>
+    
+  </div>
+</div>
+

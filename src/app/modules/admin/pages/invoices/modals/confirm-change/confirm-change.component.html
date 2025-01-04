@@ -1,0 +1,25 @@
+<ng-container *transloco="let t">
+    <h2 class="text-xl leading-6 font-medium ng-star-inserted">{{ t('eliminacion.confirm') }}</h2>
+
+    <mat-form-field class="mt-4 fuse-mat-dense">
+        <mat-label>Motivo de rechazo</mat-label>
+        <input matInput type="text" placeholder="Escribe el motivo" [(ngModel)]="value">
+        @if (value) {
+        <button matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+            <mat-icon>close</mat-icon>
+        </button>
+        }
+    </mat-form-field>
+
+    <div class="flex w-full justify-between">
+        <button class="fuse-mat-button bg-red-700 w-50 mt-5" mat-flat-button [color]="'primary'"
+            (click)="dialogRef.close()">
+            <span> {{ t('eliminacion.cancelar') }} </span>
+        </button>
+
+        <button class="fuse-mat-button w-50 mt-5" mat-flat-button [color]="'primary'" [disabled]="value.length < 5"
+            (click)="continue()">
+            <span> {{ t('eliminacion.confirmar') }} </span>
+        </button>
+    </div>
+</ng-container>

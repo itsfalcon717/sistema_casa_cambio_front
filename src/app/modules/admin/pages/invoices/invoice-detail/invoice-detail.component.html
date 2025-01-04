@@ -1,0 +1,187 @@
+<div class="w-full" *transloco="let t">
+    <div class="flex w-full justify-between">
+        <h1 class="mt-3 text-2xl font-semibold tracking-tight text-slate-900 flex justify-between">
+            {{t('migohes.detail')}}
+        </h1>
+
+        <!-- <button class="fuse-mat-button px-5 mt-5 bg-primary text-white" mat-flat-button (click)="do()"
+            *ngIf="!userService.isProvider">
+            <span> Facturar </span>
+        </button> -->
+    </div>
+
+    <div class="flex flex-col bg-white px-4 mt-5 pt-3 pb-2 rounded gap-3">
+        <div class="w-full">
+            <div class="columns-3">
+                <div>
+                    <mat-form-field class="w-full fuse-mat-dense">
+                        <mat-label class="font-semibold">{{t('invoices.detail.fc1')}}:</mat-label>
+                        <input matInput [ngModel]="data?.nroGuiaProveedor" placeholder="-" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <mat-form-field class="w-full fuse-mat-dense">
+                        <mat-label class="font-semibold">{{t('proveedor.titulo')}}:</mat-label>
+                        <input matInput [ngModel]="data?.nombreProveedor" placeholder="-" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <mat-form-field class="w-full fuse-mat-dense">
+                        <mat-label class="font-semibold">{{t('invoices.detail.fc5')}}:</mat-label>
+                        <input matInput [ngModel]="data?.rucProveedor" placeholder="-" readonly>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-6 p-4 text-sm text-yellow-800 rounded-lg bg-warn-100 dark:bg-gray-800 dark:text-yellow-300"
+        role="alert" *ngIf="dataInvoice?.observaciones">
+        <span class="font-bold">{{t('observation')}}:</span> <br> {{dataInvoice?.observaciones}}
+    </div>
+
+    <div class="flex flex-col mt-3">
+        <div class="w-full mt-5">
+            <h3 class="font-extrabold"> {{t('invoices.invoicedetail')}} </h3>
+            <div class="mt-3">
+                <ng-container>
+                    <table mat-table [dataSource]="dataSource" class="w-full">
+                        <ng-container matColumnDef="item">
+                            <th mat-header-cell *matHeaderCellDef>{{ t('detailem.table.th1') }}</th>
+                            <td mat-cell *matCellDef="let element">{{element.item}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="codprod">
+                            <th mat-header-cell *matHeaderCellDef>{{ t('detailem.table.th3') }}</th>
+                            <td mat-cell *matCellDef="let element">{{element.codprod}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="idAmarre">
+                            <th mat-header-cell *matHeaderCellDef>{{t('invoices.table.th7')}}</th>
+                            <td mat-cell *matCellDef="let element">{{element.idAmarre}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="description">
+                            <th mat-header-cell *matHeaderCellDef>{{t('detailem.table.th4')}}</th>
+                            <td mat-cell *matCellDef="let element">{{element.description}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="quantity">
+                            <th mat-header-cell *matHeaderCellDef>{{t('pOrders.Detail.ordDetCantidad')}}</th>
+                            <td mat-cell *matCellDef="let element">{{element.quantity}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="price">
+                            <th mat-header-cell *matHeaderCellDef>{{t('pOrders.Detail.ordDetPrecioUnitario')}}</th>
+                            <td mat-cell *matCellDef="let element">{{element.price}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="total">
+                            <th mat-header-cell *matHeaderCellDef>{{t('pOrders.cTotal')}}</th>
+                            <td mat-cell *matCellDef="let element">{{element.total}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="actions">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell *matCellDef="let element">
+                                <button mat-mini-fab class="shadow-none" (click)="openMd()"
+                                    style="transform: scale(.8);">
+                                    <mat-icon>border_color</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex mt-2 w-full justify-between" *ngIf="!isPreview">
+        <div>
+            <button class="fuse-mat-button px-5 mt-5 bg-primary text-white" [disabled]="!!fillXml"
+                [ngClass]="{'opacity-50': !!fillXml}" mat-flat-button (click)="do('xml')">
+                <span> Adjuntar XML </span>
+            </button>
+
+            <button class="fuse-mat-button px-5 mx-2 mt-5 bg-accent text-white" [disabled]="!!fillPdf"
+                [ngClass]="{'opacity-50': !!fillPdf}" mat-flat-button (click)="do('pdf')">
+                <span> Adjuntar PDF </span>
+            </button>
+
+            <button class="fuse-mat-button px-5 mt-5 bg-blue-500 text-white" [disabled]="!!fillDocx"
+                [ngClass]="{'opacity-50': !!fillDocx}" mat-flat-button (click)="do('docx')">
+                <span> Buscar Conformidad </span>
+            </button>
+        </div>
+        <div>
+            <button class="fuse-mat-button px-5 mr-2 mt-5 bg-red-700 text-white" mat-flat-button
+                [routerLink]="['/invoices']" routerLinkActive="router-link-active" *ngIf="!userService.isProvider">
+                <span> Cancelar </span>
+            </button>
+
+            <button class="fuse-mat-button px-5 mt-5 text-white" mat-flat-button color="primary"
+                [disabled]="files.length !== 3" (click)="do()" *ngIf="!userService.isProvider">
+                <span> Registrar Pre-Factura </span>
+            </button>
+        </div>
+    </div>
+
+    <div class="flex flex-col mt-4" *ngIf="files.length">
+        <div class="w-full">
+            <div class="mt-3">
+                <ng-container>
+                    <table mat-table [dataSource]="dataSource2" class="w-full">
+                        <ng-container matColumnDef="archivoRes">
+                            <th mat-header-cell *matHeaderCellDef>{{ t('catalogo.nombre_archi') }}</th>
+                            <td mat-cell *matCellDef="let element">
+                                <p class="font-bold hover:underline cursor-pointer hover:primary"
+                                    (click)="download(element)">{{element.archivoRes}}</p>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="type">
+                            <th mat-header-cell *matHeaderCellDef>{{ t('cta.tipo') }}</th>
+                            <td mat-cell *matCellDef="let element">{{element.type}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="actions">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell *matCellDef="let element">
+                                <div class="flex justify-end" *ngIf="!isPreview">
+                                    <button mat-mini-fab style="transform: scale(.8);" (click)="deleteItem(element)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+                    </table>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex mt-2 w-full justify-between" *ngIf="isPreview">
+        <div>
+            <button class="fuse-mat-button px-5 mr-2 mt-5 bg-red-700 text-white" mat-flat-button
+                [routerLink]="['/invoices']" routerLinkActive="router-link-active">
+                <span> {{userService.isProvider ? 'Regresar' : 'Cancelar'}} </span>
+            </button>
+        </div>
+        <div *ngIf="!userService.isProvider">
+            <button class="fuse-mat-button px-5 mr-2 mt-5 bg-red-700 text-white" mat-flat-button (click)="reject()">
+                <span> Rechazar </span>
+            </button>
+            <button class="fuse-mat-button px-5 mt-5 bg-primary text-white" mat-flat-button (click)="approve()">
+                <span> Aprobar </span>
+            </button>
+        </div>
+    </div>
+</div>

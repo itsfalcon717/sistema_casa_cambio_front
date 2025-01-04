@@ -1,0 +1,128 @@
+<div class="w-full" *transloco="let t">
+
+    <div class="flex flex-col">
+        <h1 class="mt-3 text-2xl font-semibold tracking-tight text-slate-900 flex justify-between">
+            {{ t('users.title') }}
+            <button mat-raised-button color="primary"  *ngIf="this.edit" (click)="openNew()"> {{ t('users.botonNew') }} </button>
+        </h1>
+    </div>
+
+    <div class="flex flex-col bg-white px-4 mt-4 pt-3 pb-2 rounded gap-3">
+        <h3 class="font-semibold text-primary">{{ t('paymentVouchers.filtro_titulo') }}:</h3>
+        <form class="flex flex-auto gap-3 items-center" [formGroup]="fg" (ngSubmit)="doFilter()">
+            <div  class="columns-3 w-full">
+                <div>
+                    <mat-form-field class="w-full fuse-mat-dense">
+                        <mat-label class="font-semibold"> {{ t('users.rol') }}:</mat-label>
+                        <mat-select placeholder="Selecciona un tipo" formControlName="idPerfil">
+                          <mat-option *ngFor="let item of listRol.data" [value]="item.id">
+                            {{ item.nombre }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                </div>
+                <div  >
+                    <mat-form-field class="w-full fuse-mat-dense">
+                        <mat-label>{{ t('users.usuario') }}</mat-label>
+                        <input matInput placeholder="-" formControlName="usuario">
+                    </mat-form-field>
+                </div>
+                <div class="flex justify-end items-center space-x-4">
+                  <button class="mt-6" mat-raised-button color="primary" type="submit" [disabled]="!fg.valid">{{t('btn.filtrar')}}</button>
+                  <button class="mt-6 ml-3" mat-raised-button color="primary" type="button" (click)="clearFilters()">{{t('btn.limpiar')}}</button>
+                </div>
+              </div>
+        </form>
+    </div>
+
+    <div class="flex flex-col mt-4">
+        <div class="w-full mt-3">
+            <table mat-table [dataSource]="dataSource" class="w-full">
+                <ng-container matColumnDef="code">
+                    <th mat-header-cell *matHeaderCellDef> {{ t('users.tabla.code') }} </th>
+                    <td mat-cell *matCellDef="let element; let i = index"> {{i + 1}} </td> <!-- Aquí asignamos el índice -->
+                  </ng-container>
+                  <ng-container matColumnDef="idUser">
+                    <th mat-header-cell *matHeaderCellDef class="hidden"> idUser </th>
+                    <td mat-cell *matCellDef="let element" class="hidden"> {{element.idUser}} </td> <!-- Aquí asignamos el índice -->
+                  </ng-container>
+                  <ng-container matColumnDef="idPerfil">
+                    <th mat-header-cell *matHeaderCellDef class="hidden"> idPerfil </th>
+                    <td mat-cell *matCellDef="let element" class="hidden"> {{element.idPerfil}} </td> <!-- Aquí asignamos el índice -->
+                  </ng-container>
+                  <ng-container matColumnDef="idPersona">
+                    <th mat-header-cell *matHeaderCellDef class="hidden"> idPersona </th>
+                    <td mat-cell *matCellDef="let element" class="hidden"> {{element.idPersona}} </td> <!-- Aquí asignamos el índice -->
+                  </ng-container>
+                  <ng-container matColumnDef="idProveedor">
+                    <th mat-header-cell *matHeaderCellDef class="hidden"> idProveedor </th>
+                    <td mat-cell *matCellDef="let element" class="hidden"> {{element.idProveedor}} </td> <!-- Aquí asignamos el índice -->
+                  </ng-container>
+                <ng-container matColumnDef="Rol">
+                    <th mat-header-cell *matHeaderCellDef>{{ t('users.tabla.rol') }}</th>
+                    <td mat-cell *matCellDef="let element"> {{element.nombrePerfil}} </td>
+                </ng-container>
+                <ng-container matColumnDef="usuario">
+                    <th mat-header-cell *matHeaderCellDef> {{ t('users.tabla.user') }} </th>
+                    <td mat-cell *matCellDef="let element"> {{element.usuario}} </td>
+                </ng-container>
+                <ng-container matColumnDef="password">
+                    <th mat-header-cell *matHeaderCellDef> {{ t('users.tabla.password') }}  </th>
+                    <td mat-cell *matCellDef="let element"> {{element.password}} </td>
+                </ng-container>
+                <ng-container matColumnDef="nombre">
+                    <th mat-header-cell *matHeaderCellDef> {{ t('users.tabla.nombre') }} </th>
+                    <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+                </ng-container>
+                <ng-container matColumnDef="apellido">
+                    <th mat-header-cell *matHeaderCellDef>{{ t('users.tabla.apellido') }}</th>
+                    <td mat-cell *matCellDef="let element"> {{element.apellido}} </td>
+                </ng-container>
+
+                <!-- <ng-container matColumnDef="ruc">
+                    <th mat-header-cell *matHeaderCellDef> {{ t('users.tabla.ruc') }} </th>
+                    <td mat-cell *matCellDef="let element"> {{element.ruc}} </td>
+                </ng-container>
+                <ng-container matColumnDef="razonSocial">
+                    <th mat-header-cell *matHeaderCellDef> {{ t('users.tabla.razonSocial') }} </th>
+                    <td mat-cell *matCellDef="let element"> {{element.razonSocial}} </td>
+                </ng-container> -->
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef> {{ t('users.tabla.correo') }}</th>
+                    <td mat-cell *matCellDef="let element"> {{element.correo}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="area">
+                    <th mat-header-cell *matHeaderCellDef> {{ t('users.tabla.area') }}</th>
+                    <td mat-cell *matCellDef="let element"> {{element.area}} </td>
+                </ng-container>
+             
+
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef> {{ t('users.tabla.activo') }}</th>
+                    <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions" *ngIf="this.edit">
+                    <th mat-header-cell *matHeaderCellDef>  {{ t('users.tabla.accion') }} </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="flex justify-start gap-1">
+                            <button mat-mini-fab style="transform: scale(0.8)"  (click)="openNew(element)">
+                                <mat-icon>edit</mat-icon>
+                              </button>
+                       
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <div class="w-full justify-end">
+                <mat-paginator showFirstLastButtons [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+            </div>
+        </div>
+    </div>
+
+</div>

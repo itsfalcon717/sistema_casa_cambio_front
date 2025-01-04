@@ -1,0 +1,112 @@
+<div
+  class="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0 login-bg"
+>
+  <div class="absolute right-2">
+    <languages></languages>
+  </div>
+  <div
+    class="md:flex md:items-center md:justify-end w-full sm:w-auto md:h-full md:w-full py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none bg-black/50"
+    *transloco="let t"
+  >
+    <div class="w-100 mx-auto bg-white px-6 py-5 rounded-2xl">
+      <!-- Logo -->
+      <div class="w-full">
+        <img src="assets/images/logo_silvestre/economico.png" class="w-50 mx-auto" />
+      </div>
+
+        <h2 class="text-center text-2xl font-bold m-0">{{ t('login.title') }}</h2>
+
+      <fuse-alert
+        class="mt-1"
+        *ngIf="showAlert"
+        [appearance]="'outline'"
+        [showIcon]="false"
+        [type]="alert.type"
+        [@shake]="alert.type === 'error'"
+      >
+        {{ alert.message }}
+      </fuse-alert>
+
+      <!-- Sign in form -->
+      <form class="mt-8" [formGroup]="signInForm" #signInNgForm="ngForm">
+        <!-- Email field -->
+        <mat-form-field class="w-full fuse-mat-dense">
+          <mat-label>{{ t('login.usuario') }}</mat-label>
+          <input id="email" matInput [formControlName]="'username'" />
+          <mat-error *ngIf="signInForm.get('username').hasError('required')"> El usuario es requerido </mat-error>
+          <mat-error *ngIf="signInForm.get('username').hasError('email')"> Ingresa un usuario valido </mat-error>
+        </mat-form-field>
+
+        <!-- Password field -->
+        <mat-form-field class="w-full fuse-mat-dense">
+          <mat-label>{{ t('login.contrasena') }}</mat-label>
+          <input
+            id="password"
+            style="text-transform: none !important"
+            matInput
+            type="password"
+            [formControlName]="'password'"
+            #passwordField
+          />
+          <button
+            mat-icon-button
+            type="button"
+            (click)="
+              passwordField.type === 'password' ? (passwordField.type = 'text') : (passwordField.type = 'password')
+            "
+            matSuffix
+          >
+            <mat-icon
+              class="icon-size-5"
+              *ngIf="passwordField.type === 'password'"
+              [svgIcon]="'heroicons_solid:eye'"
+            ></mat-icon>
+            <mat-icon
+              class="icon-size-5"
+              *ngIf="passwordField.type === 'text'"
+              [svgIcon]="'heroicons_solid:eye-slash'"
+            ></mat-icon>
+          </button>
+          <mat-error> Contraseña requerida </mat-error>
+        </mat-form-field>
+
+        <!-- Actions -->
+        <div class="inline-flex items-center justify-end w-full mt-1.5">
+          <!-- <mat-checkbox class="-ml-2" [color]="'primary'" [formControlName]="'rememberMe'">
+                        Recordar
+                    </mat-checkbox> -->
+          <a class="text-md font-medium text-accent hover:underline" [routerLink]="['/forgot-password']"
+            >{{ t('login.olv_contra') }}
+          </a>
+        </div>
+
+        <!-- Submit button -->
+        <button
+          class="fuse-mat-button-large w-full mt-5"
+          mat-flat-button
+          [color]="'primary'"
+          [disabled]="signInForm.invalid"
+          (click)="signIn()"
+        >
+          <span *ngIf="!signInForm.disabled"> {{ t('btn.iniciar_sesion') }} </span>
+          <mat-progress-spinner
+            *ngIf="signInForm.disabled"
+            [diameter]="24"
+            [mode]="'indeterminate'"
+          ></mat-progress-spinner>
+        </button>
+
+        <!-- Separator -->
+        <div class="flex items-center mt-8">
+          <div class="flex-auto mt-px border-t"></div>
+          <div class="mx-2 text-secondary">
+            <a class="text-md font-bold text-accent hover:underline" [routerLink]="['/sign-up']"
+              >{{ t('login.registrarme') }}
+            </a>
+          </div>
+          <div class="flex-auto mt-px border-t"></div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

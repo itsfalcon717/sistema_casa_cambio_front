@@ -1,0 +1,45 @@
+<div class="w-full" *ngIf="!isLoading()">
+
+    <div class="flex flex-col">
+        <h1 class="mt-3 text-2xl font-semibold tracking-tight text-slate-900">Datos de Proveedor</h1>
+    </div>
+
+
+    <form [formGroup]="fg" class="flex flex-col bg-primary-100 p-3 mt-4">
+        <p class="font-bold">Confidencialidad de Datos</p>
+        <div class="flex flex-col">
+            <p class="mt-3">
+                <mat-checkbox formControlName="chek1" color="primary">
+                    <span class="relative -top-1">
+                        Acepto Políticas de Privacidad de Datos Personales, Ley Nº 29733.
+                        <a href="">
+                            <mat-icon class="relative top-1.5" color="primary">description</mat-icon>
+                        </a>
+                    </span>
+                </mat-checkbox>
+            </p>
+            <p>
+                <mat-checkbox formControlName="chek2" color="primary">
+                    <span class="relative -top-1">
+                        Acepto Código de Conducta.
+                        <a href="">
+                            <mat-icon class="relative top-1.5" color="primary">description</mat-icon>
+                        </a>
+                    </span>
+                </mat-checkbox>
+            </p>
+        </div>
+
+        <div class="flex gap-2 mt-3">
+            <button type="button" mat-flat-button color="primary" [disabled]="fg.invalid" (click)="doCheck()">
+                <mat-icon>check</mat-icon>
+                Aceptar
+            </button>
+            <button type="button" mat-flat-button [routerLink]="['/']">
+                <mat-icon>close</mat-icon>
+                Rechazar
+            </button>
+        </div>
+    </form>
+
+</div>

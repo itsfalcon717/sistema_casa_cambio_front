@@ -1,0 +1,49 @@
+<div class="w-full mx-auto sm:mx-0" *transloco="let t">
+    <div class="mt-2 text-2xl font-extrabold tracking-tight leading-tight">{{t('contac.registro_contc')}}</div>
+
+    <form class="mt-8" [formGroup]="fgr">
+        <mat-form-field class="w-full fuse-mat-dense">
+            <mat-label>{{t('contac.nombre')}}</mat-label>
+            <input id="name" matInput [formControlName]="'nombres'" placeholder="{{t('contac.nomb_c_holder')}}" />
+        </mat-form-field>
+        <mat-form-field class="w-full fuse-mat-dense">
+            <mat-label>{{t('contac.apellido')}}</mat-label>
+            <input id="name" matInput [formControlName]="'apellidos'" placeholder="{{t('contac.apell_c_holder')}}" />
+        </mat-form-field>
+        <mat-form-field class="w-full fuse-mat-dense">
+            <mat-label>{{t('contac.tip_per')}}</mat-label>
+            <mat-select placeholder="{{t('contac.tip_per')}}" [formControlName]="'idTipo'">
+                <mat-option *ngFor="let item of tipoPersona" [value]="item.id">{{ item.nombre }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="w-full fuse-mat-dense">
+            <mat-label>{{t('contac.cargo')}}</mat-label>
+            <input id="email" matInput [formControlName]="'cargo'" placeholder="{{t('contac.cargo')}}" />
+        </mat-form-field>
+
+        <mat-form-field class="w-full fuse-mat-dense">
+            <mat-label>{{t('contact.telef')}}</mat-label>
+            <input *ngIf="providerSrv.isNational" id="email" matInput [formControlName]="'telefono'" mask="999999999"
+                placeholder="{{t('contact.telef')}}" />
+            <input *ngIf="!providerSrv.isNational" id="email" matInput [formControlName]="'telefono'"
+                mask="999999999999999" placeholder="{{t('contact.telef')}}" />
+        </mat-form-field>
+
+        <mat-form-field class="w-full fuse-mat-dense">
+            <mat-label>{{t('contac.email')}}</mat-label>
+            <input id="email" type="email" matInput [formControlName]="'correo'" placeholder="{{t('contac.email')}}" />
+        </mat-form-field>
+        <div class="pt-5">
+            <mat-slide-toggle color="primary" [formControlName]="'principal'">
+                {{t('contac.principal')}}
+            </mat-slide-toggle>
+        </div>
+        <button class="fuse-mat-button-large w-full mt-6" mat-flat-button [color]="'primary'"
+            [disabled]="fgr.invalid || fgr.disabled" (click)="doRegister()">
+            <span *ngIf="!fgr.disabled">
+                {{ flg_edit ? t('contac.actual') : t('contac.creas') }}
+            </span>
+            <mat-progress-spinner *ngIf="fgr.disabled" [diameter]="24" [mode]="'indeterminate'"></mat-progress-spinner>
+        </button>
+    </form>
+</div>

@@ -1,0 +1,55 @@
+<div class="w-full mx-auto sm:mx-0" *transloco="let t">
+    <div class=" mt-2 text-2xl font-extrabold tracking-tight leading-tight">Cambio de contraseña</div>
+
+    <div class="bg-accent-100 px-3 py-2 rounded w-full mt-4">
+        <span class="font-bold">{{t('newpassword.infotitle')}}</span>
+        <ul class="mt-1">
+            <li>{{t('newpassword.info1')}}</li>
+            <li>{{t('newpassword.info2')}}</li>
+            <li>{{t('newpassword.info3')}}</li>
+            <li>{{t('newpassword.info4')}}</li>
+        </ul>
+    </div>
+
+    <form class="mt-4" [formGroup]="fg">
+        <mat-form-field class="w-full fuse-mat-dense">
+            <mat-label>Nueva Contraseña</mat-label>
+            <input id="email" style="text-transform: none !important;" matInput type="password" maxlength="20"
+                [formControlName]="'clave'" #passwordField2 />
+            <button mat-icon-button type="button" (click)="
+              passwordField2.type === 'password' ? (passwordField2.type = 'text') : (passwordField2.type = 'password')
+            " matSuffix>
+                <mat-icon class="icon-size-5" *ngIf="passwordField2.type === 'password'"
+                    [svgIcon]="'heroicons_solid:eye'"></mat-icon>
+                <mat-icon class="icon-size-5" *ngIf="passwordField2.type === 'text'"
+                    [svgIcon]="'heroicons_solid:eye-slash'"></mat-icon>
+            </button>
+            <mat-error> Contraseña requerida </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="w-full fuse-mat-dense">
+            <mat-label>Confirmar contraseña</mat-label>
+            <input id="email" style="text-transform: none !important;" matInput type="password" maxlength="20"
+                [formControlName]="'clave_confirmacion'" #confirmField />
+            <button mat-icon-button type="button" (click)="
+      confirmField.type === 'password' ? (confirmField.type = 'text') : (confirmField.type = 'password')
+    " matSuffix>
+                <mat-icon class="icon-size-5" *ngIf="confirmField.type === 'password'"
+                    [svgIcon]="'heroicons_solid:eye'"></mat-icon>
+                <mat-icon class="icon-size-5" *ngIf="confirmField.type === 'text'"
+                    [svgIcon]="'heroicons_solid:eye-slash'"></mat-icon>
+            </button>
+            <mat-error> Contraseña requerida </mat-error>
+        </mat-form-field>
+
+
+        <button class="fuse-mat-button-large w-full mt-6" mat-flat-button [color]="'primary'"
+            [disabled]="fg.invalid || fg.disabled || fg.get('clave').value !== fg.get('clave_confirmacion').value "
+            (click)="doRegister()">
+            <span *ngIf="!fg.disabled">
+                Cambiar contraseña
+            </span>
+            <mat-progress-spinner *ngIf="fg.disabled" [diameter]="24" [mode]="'indeterminate'"></mat-progress-spinner>
+        </button>
+    </form>
+</div>

@@ -1,0 +1,134 @@
+<div class="w-full" *transloco="let t">
+    <div class="flex flex-col" *ngIf="!isLoading()">
+        <div class="flex justify-between m-4">
+            <h1 class="mt-3 text-2xl font-semibold tracking-tight text-slate-900">
+                {{ t('proveedor.titulo') }}
+                <span *ngIf="providerService.currentProvider.porcentaje === 100"
+                    class="bg-primary text-white ml-3 text-sm font-medium me-2 px-2.5 py-0.5 rounded">{{
+                    t('proveedor.homologado') }}</span>
+
+                <span *ngIf="isRefuce()=='APROBADO'"
+                    class="bg-accent text-white text-sm font-medium me-2 px-2.5 py-0.5 rounded">{{
+                    t('status.aprobado') }}</span>
+
+                <span *ngIf="isRefuce()=='RECHAZADO'"
+                    class="bg-warn text-white text-sm font-medium me-2 px-2.5 py-0.5 rounded">{{
+                    t('status.rechazado') }}</span>
+            </h1>
+
+            <div class="flex w-1/2 justify-end gap-2" *ngIf="!userService.isProvider">
+                <button [disabled]="isLoading()" class="fuse-mat-button min-w-[190px] mt-5 bg-green-900 text-white"
+                    *ngIf="isRefuce()=='APROBADO'" mat-flat-button (click)="sendSubsanar()">
+                    <span>{{t('btn.solicitud')}}</span>
+                </button>
+                <button [disabled]="isLoading()" class="fuse-mat-button w-50 mt-5 bg-red-700 text-white" mat-flat-button
+                    *ngIf="isRefuce()!='RECHAZADO'" (click)="AproReject(4)">
+                    <span> {{ t('btn.rechazar') }} </span>
+                </button>
+                <button [disabled]="isLoading()" class="fuse-mat-button w-50 mt-5" mat-flat-button [color]="'primary'"
+                    (click)="AproReject(3)" *ngIf="isRefuce()!='APROBADO' && isRefuce()!='RECHAZADO'">
+                    <span> {{ t('btn.aprobar') }} </span>
+                </button>
+            </div>
+
+            <div class="flex w-1/2 justify-end gap-2"
+                *ngIf="userService.isProvider && providerService.verified && providerService.currentProvider.idEstado != 3">
+                <button class="fuse-mat-button w-50 mt-5 bg-primary-700 text-white" mat-flat-button
+                    (click)="AproReject(2)"
+                    *ngIf="userService.isProvider && providerService.currentProvider.idEstado != 2">
+                    <span> {{ t('btn.envia_eva') }} </span>
+                </button>
+
+                <button class="fuse-mat-button w-50 mt-5 bg-primary-300 text-white" mat-flat-button readonly
+                    *ngIf="userService.isProvider && providerService.currentProvider.idEstado == 2">
+                    <span> En Evaluación </span>
+                </button>
+            </div>
+        </div>
+        <div class="m-4">
+            <p class="mt-4 text-sm">{{t('porcen.homo')}}:</p>
+            <div class="percentage mt-1">
+                <div [style.width]="percentage() + '%'" [style.background]="percentage() === 0 ? 'white' : ''">
+                    <span [style.color]="percentage() < 30 ? 'black' : 'white'">{{ percentage() }}%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mx-4 p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300"
+            role="alert" *ngIf="!userService.isAdmin && providerService.currentProvider.observacion">
+            <span class="font-medium">{{t('observation')}}:</span> {{providerService.currentProvider.observacion}}
+        </div>
+
+        <div class="flex mt-4 w-full" *ngIf="!isLoading()">
+            <mat-tab-group class="w-full" [selectedIndex]="!providerService.verified ? 5 : 0"
+                (selectedTabChange)="tabChanged($event)">
+                <ng-container *ngIf="providerService.verified">
+                    <mat-tab [disabled]="!providerService.verified" label="General">
+                        <ng-template mat-tab-label>
+                            <span class="px-2 relative top-.5">{{ t('general.titulo') }}</span>
+                        </ng-template>
+                        <app-data-general></app-data-general>
+                    </mat-tab>
+                    <mat-tab [disabled]="!providerService.verified" label="Contactos y Representantes">
+                        <ng-template mat-tab-label>
+                            <span class="px-2 relative top-.5">{{ t('contac.titulo') }}</span>
+                        </ng-template>
+                        <app-data-contacts></app-data-contacts>
+                    </mat-tab>
+                    <mat-tab [disabled]="!providerService.verified" label="Producto Servicio">
+                        <ng-template mat-tab-label>
+                            <span class="px-2 relative top-.5">{{ t('marca.titulo') }}</span>
+                        </ng-template>
+                        <app-data-products></app-data-products>
+                    </mat-tab>
+                    <mat-tab [disabled]="!providerService.verified" label="Catalogo">
+                        <ng-template mat-tab-label>
+                            <span class="px-2 relative top-.5">{{ t('catalogo.titulo') }}</span>
+                        </ng-template>
+                        <app-data-catalogo></app-data-catalogo>
+                    </mat-tab>
+                    <mat-tab [disabled]="!providerService.verified" label="Ubicacion">
+                        <ng-template mat-tab-label>
+                            <span class="px-2 relative top-.5">{{ t('ubi.titulo') }}</span>
+                        </ng-template>
+                        <app-data-ubicacion></app-data-ubicacion>
+                    </mat-tab>
+                    <mat-tab [disabled]="!providerService.verified" label="Cta Bancaria">
+                        <ng-template mat-tab-label>
+                            <span class="px-2 relative top-.5">{{ t('cta.titulo') }}</span>
+                        </ng-template>
+                        <app-data-bank></app-data-bank>
+                    </mat-tab>
+                </ng-container>
+                <mat-tab label="Homologación">
+                    <ng-template mat-tab-label>
+                        <span class="px-2 relative top-.5">{{ t('homo.titulo') }}</span>
+                    </ng-template>
+                    <app-data-verify></app-data-verify>
+                </mat-tab>
+
+                <ng-container *ngIf="userService.isAdmin">
+                    <mat-tab label="Datos ERP">
+                        <ng-template mat-tab-label>
+                            <span class="px-2 relative top-.5">{{ t('erp.titulo') }}</span>
+                        </ng-template>
+                        <app-data-validate></app-data-validate>
+                    </mat-tab>
+                </ng-container>
+            </mat-tab-group>
+        </div>
+
+        <div class="flex w-full justify-end gap-2"
+            *ngIf="userService.isProvider && providerService.verified && providerService.currentProvider.idEstado != 3">
+            <button class="fuse-mat-button w-50 mt-5 bg-primary-700 text-white" mat-flat-button (click)="AproReject(2)"
+                *ngIf="userService.isProvider && providerService.currentProvider.idEstado != 2">
+                <span> {{ t('btn.envia_eva') }} </span>
+            </button>
+
+            <button class="fuse-mat-button w-50 mt-5 bg-primary-300 text-white" mat-flat-button readonly
+                *ngIf="userService.isProvider && providerService.currentProvider.idEstado == 2">
+                <span> En Evaluación </span>
+            </button>
+        </div>
+    </div>
+</div>

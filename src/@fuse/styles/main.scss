@@ -1,0 +1,19 @@
+/* 1. Components */
+@use 'components/example-viewer';
+@use 'components/input';
+
+/* 2. Overrides */
+@use 'overrides/angular-material';
+@use 'overrides/highlightjs';
+@use 'overrides/perfect-scrollbar';
+@use 'overrides/quill';
+
+.custom-chip {
+  .mat-mdc-form-field-infix {
+    flex-direction: column !important;
+    align-items: baseline !important;
+  }
+  input {
+    max-height: 40px !important;
+  }
+}

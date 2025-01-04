@@ -1,0 +1,38 @@
+<ng-container *transloco="let t">
+    <h2>{{ t('eliminacion.confirm') }}</h2>
+
+    <form [formGroup]="fg" class="flex flex-col bg-primary-100 p-3 mt-4">
+        <div class="flex flex-col">
+            <p class="mt-3">
+                <mat-checkbox formControlName="aceptaDJ" color="primary">
+                    <p class="relative -top-1 text-justify">
+                        {{t('policies.n1')}}
+                    </p>
+                </mat-checkbox>
+            </p>
+            <p class="mt-3">
+                <mat-checkbox formControlName="aceptaAD" color="primary">
+                    <p class="relative -top-1 text-justify">
+                        {{t('policies.n2')}}
+                    </p>
+                </mat-checkbox>
+            </p>
+
+            <p class="mt-3">
+                <mat-checkbox formControlName="aceptaDP" color="primary">
+                    <p class="relative -top-1 text-justify">
+                        {{t('policies.n3')}}
+                    </p>
+                </mat-checkbox>
+            </p>
+        </div>
+    </form>
+
+
+    <div class="flex w-full justify-end">
+        <button class="fuse-mat-button w-50 mt-5" mat-flat-button [color]="'primary'" [disabled]="fg.invalid"
+            (click)="continue()">
+            <span> {{ t('accept') }} </span>
+        </button>
+    </div>
+</ng-container>

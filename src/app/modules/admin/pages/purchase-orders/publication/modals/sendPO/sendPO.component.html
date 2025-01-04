@@ -1,0 +1,17 @@
+<div class="w-full mx-auto sm:mx-0">
+  <div class="mt-2 text-2xl font-extrabold tracking-tight leading-tight">Detalle del asunto del correo</div>
+
+  <form class="mt-8" [formGroup]="fg">
+    <div class="flex flex-col">
+      <label for="asunto" class="font-semibold">Asunto:</label>
+      <mat-form-field appearance="fill" class="w-full">
+        <textarea matInput placeholder="Escribe el asunto aquí" rows="2" id="asunto"></textarea>
+      </mat-form-field>
+    </div>
+    <div class="flex justify-end space-x-4 mt-4">
+      <button mat-raised-button color="warn" class="py-2 px-4" type="button" (click)="dialogRef.close()">Cancelar</button>
+      <button mat-raised-button color="primary" class="py-2 px-4" type="submit">Enviar</button>
+    </div>
+  </form>
+  
+</div>

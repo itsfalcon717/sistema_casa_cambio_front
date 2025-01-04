@@ -1,0 +1,169 @@
+<div class="w-full" *transloco="let t">
+    <div class="flex flex-col">
+        <h1 class="mt-3 text-2xl font-light tracking-tight text-slate-900 flex justify-between mb-4">
+            <span class="flex items-center gap-2">
+                <mat-icon class="text-semibold">widgets</mat-icon>
+                {{t('erp.titulo')}}
+            </span>
+
+            <button mat-raised-button color="primary" *ngIf="user.isProvider && !currentProvider.homilogaciom"
+                (click)="finalizar()">
+                Enviar Datos
+            </button>
+        </h1>
+    </div>
+
+    <div class="flex flex-col mt-2" [formGroup]="fb">
+        <div class="bg-card px-3 py-4 w-full rounded mt-3">
+            <div class="columns-4 w-full">
+                <div>
+                    <mat-form-field class="w-full fuse-mat-dense">
+                        <mat-label>{{t('general.tipo_proveedor')}}</mat-label>
+                        <mat-select placeholder="{{t('erp.selec.tip')}}" formControlName="idTipo">
+                            <mat-option *ngFor="let item of tipoProv" [value]="item.id">{{ item.nombre
+                                }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <mat-form-field class="w-full fuse-mat-dense">
+                        <mat-label>{{t('general.tipo_contrib')}}</mat-label>
+                        <mat-select placeholder="{{t('erp.selec.tip')}}" formControlName="idTipoContribuyente">
+                            <mat-option *ngFor="let item of contribuyente" [value]="item.id">{{ item.nombre
+                                }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+
+            <div class="columns-4 w-full">
+                <div>
+                    <mat-form-field class="w-full fuse-mat-dense">
+                        <mat-label>{{t('general.ruc')}}</mat-label>
+                        <input matInput placeholder="-" mask="00000000000000" formControlName="ruc" />
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <mat-form-field class="w-full fuse-mat-dense">
+                        <mat-label>{{t('general.razon_social')}}</mat-label>
+                        <input matInput placeholder="-" formControlName="razonSocial" />
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <mat-form-field class="w-full fuse-mat-dense">
+                        <mat-label>{{t('erp.nomb.comer')}}</mat-label>
+                        <input matInput placeholder="-" formControlName="nombreComercial" />
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <mat-form-field class="w-full fuse-mat-dense">
+                        <mat-label>{{t('erp.dire.fisc')}}</mat-label>
+                        <input matInput placeholder="-" formControlName="direccionFiscal" />
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="columns-4 w-full">
+                <div>
+                    <mat-form-field class="w-full fuse-mat-dense">
+                        <mat-label>{{t('ubigeo.pais')}}</mat-label>
+                        <mat-select placeholder="{{t('erp.selec.tip')}}" formControlName="idPais">
+                            <mat-option *ngFor="let item of pais" [value]="item.id">{{ item.nombre }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field class="w-full fuse-mat-dense">
+                        <mat-label>{{t('ubigeo.region')}}</mat-label>
+                        <mat-select placeholder="{{t('erp.holder.regi')}}" formControlName="idRegion"
+                            (selectionChange)="cargarProvincias($event.value)">
+                            <mat-option *ngFor="let item of regiones" [value]="item.id">{{ item.nombre
+                                }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field class="w-full fuse-mat-dense">
+                        <mat-label>{{t('ubigeo.provincia')}}</mat-label>
+                        <mat-select placeholder="{{t('erp.holder.prov')}}" formControlName="idProvincia"
+                            (selectionChange)="cargarDistritos($event.value)">
+                            <mat-option *ngFor="let item of provincias" [value]="item.id">{{ item.nombre
+                                }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field class="w-full fuse-mat-dense">
+                        <mat-label>{{t('ubigeo.distrito')}}</mat-label>
+                        <mat-select placeholder="{{t('erp.holder.dist')}}" formControlName="idDistrito">
+                            <mat-option *ngFor="let item of distritos" [value]="item.id">{{ item.nombre
+                                }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+
+            <div class="columns-4 w-full">
+                <div>
+                    <mat-form-field class="w-full fuse-mat-dense">
+                        <mat-label>{{t('general.giro_negoc')}}</mat-label>
+                        <mat-select placeholder="{{t('erp.selec.tip')}}" formControlName="proveedorGiroNegocio"
+                            multiple>
+                            <mat-option *ngFor="let item of giroProv" [value]="item.id">
+                                {{ item.nombre }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <mat-form-field class="w-full fuse-mat-dense">
+                        <mat-label>{{t('erp.pag.we')}}</mat-label>
+                        <input matInput placeholder="-" formControlName="paginaWeb" />
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <mat-form-field class="w-full fuse-mat-dense">
+                        <mat-label>{{t('erp.fech.cont')}}</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="fecConstitucion">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+
+                <div class="relative">
+                    <mat-form-field class="w-full fuse-mat-dense">
+                        <mat-label>{{t('erp.empr')}}</mat-label>
+                        <mat-select placeholder="{{t('erp.selec.tip')}}" (openedChange)="actualizar($event)"
+                            formControlName="proveedorEmpresa" multiple>
+                            <mat-select-trigger>
+                                @for (value of cValue; track value) {
+                                @if(value !== 'all') {
+                                <span class="example-additional-selection">
+                                    {{getCompany(value)}}{{cValue.length -1 != $index ? ', ' : ''}}
+                                </span>
+                                }
+                                }
+                            </mat-select-trigger>
+
+                            <mat-option value="all" (click)="toggleAll()" selectAll>{{t('selectall')}}</mat-option>
+
+                            <ng-container *ngFor="let item of empresa">
+                                <mat-option [value]="item.id">
+                                    {{ item.nombre }}
+                                </mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

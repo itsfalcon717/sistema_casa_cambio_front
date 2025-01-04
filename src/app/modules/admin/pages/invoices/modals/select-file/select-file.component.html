@@ -1,0 +1,35 @@
+<div class="w-full" *transloco="let t">
+    <div class="flex w-full justify-between">
+        <h1 class="mt-3 text-2xl font-semibold tracking-tight text-slate-900 flex justify-between">
+            {{t('select_file')}}
+        </h1>
+    </div>
+
+    <div class="flex flex-col mt-4">
+        <div class="w-full mt-3">
+            <div class="flex gap-3 w-full" [formGroup]="fg">
+                <mat-form-field style="width: 100%;">
+                    <mat-label>Selecciona tu archivo</mat-label>
+                    <button mat-icon-button matPrefix (click)="f_input.click()">
+                        <mat-icon>attach_file</mat-icon>
+                    </button>
+
+                    <button mat-icon-button matSuffix (click)="clearFile()">
+                        <mat-icon>clear</mat-icon>
+                    </button>
+                    <input type="text" readonly matInput formControlName="file" />
+                    <input type="file" hidden #f_input [attr.accept]="'.'+data.type"
+                        (change)="handleFileInputChange($event)" />
+                    <mat-error>this field is required</mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex w-full justify-end">
+        <button (click)="doRegister()" [disabled]="fg.invalid" [ngClass]="{'opacity-50': fg.invalid}"
+            class="fuse-mat-button px-5 mt-5 bg-primary text-white" mat-flat-button>
+            <span> Registrar Archivo </span>
+        </button>
+    </div>
+</div>

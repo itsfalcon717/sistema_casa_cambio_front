@@ -1,0 +1,31 @@
+<div class="w-full mx-auto sm:mx-0" *transloco="let t">
+    <div class=" mt-2 text-2xl font-extrabold tracking-tight leading-tight">{{t('marca.titu_agre')}}</div>
+
+    <form class="mt-8" [formGroup]="fg">
+        <mat-form-field class="w-full fuse-mat-dense">
+            <mat-label>{{t('marca.nombre')}}</mat-label>
+            <input id="name" matInput [formControlName]="'nombre'" placeholder="{{t('marca.nombre')}}">
+        </mat-form-field>
+
+        <mat-form-field class="w-full fuse-mat-dense">
+            <mat-label>{{t('marca.titulo')}}</mat-label>
+            <mat-select class="uppercase" placeholder="{{t('marca.titulo')}}" formControlName="productoServicio">
+                <mat-option *ngFor="let item of ['Producto', 'Servicio']" [value]="item">{{ item
+                    }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="w-full fuse-mat-dense">
+            <mat-label>{{t('marca.description')}}</mat-label>
+            <input id="name" matInput [formControlName]="'descripcion'" placeholder="{{t('marca.description')}}">
+        </mat-form-field>
+
+        <button class="fuse-mat-button-large w-full mt-6" mat-flat-button [color]="'primary'"
+            [disabled]="fg.invalid || fg.disabled" (click)="doRegister()">
+            <span *ngIf="!fg.disabled">
+                {{flg_edit ? t('btn.actualizar'):t('btn.crear')}}
+            </span>
+            <mat-progress-spinner *ngIf="fg.disabled" [diameter]="24" [mode]="'indeterminate'"></mat-progress-spinner>
+        </button>
+    </form>
+</div>

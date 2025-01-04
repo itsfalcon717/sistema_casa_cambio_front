@@ -1,0 +1,306 @@
+<div class="w-full" *transloco="let t">
+    <div class="flex flex-col">
+        <h1 class="mt-3 text-2xl font-light tracking-tight text-slate-900 flex justify-between mb-4">
+            <span class="flex items-center gap-2">
+                <mat-icon class="text-semibold">assignment</mat-icon>
+                {{t('general.informacio')}}
+            </span>
+
+            <button mat-raised-button color="primary" *ngIf="user.isProvider"
+                (click)="actualizar()">{{t('btn.actualizar_informacion')}}</button>
+        </h1>
+    </div>
+
+    <div class="flex" *ngIf="isLoading()">
+        <form class="w-full" [formGroup]="fb">
+            <div class="bg-card px-3 py-4 w-full rounded mt-3">
+                <h4 class="font-semibold mb-3 text-primary">{{t('general.subtitulo')}}</h4>
+                <hr class="my-4" />
+                <div class="columns-4">
+                    <div>
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('general.ruc')}}</mat-label>
+                            <input matInput placeholder="-" mask="00000000000000" formControlName="ruc" />
+                        </mat-form-field>
+                    </div>
+
+                    <div>
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('general.razon_social')}}</mat-label>
+                            <input matInput placeholder="-" formControlName="razonSocial" />
+                        </mat-form-field>
+                    </div>
+
+                    <div>
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('general.tipo_proveedor')}}</mat-label>
+                            <mat-select placeholder="Selecciona un tipo" formControlName="idTipo">
+                                <mat-option *ngFor="let item of tipoProv" [value]="item.id">
+                                    {{ item.nombre }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div>
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('general.tipo_contrib')}}</mat-label>
+                            <mat-select placeholder="Selecciona un tipo" formControlName="idTipoContribuyente">
+                                <mat-option *ngFor="let item of contribuyente" [value]="item.id">{{ item.nombre
+                                    }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="columns-4">
+                    <div class="w-full">
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('general.giro_negoc')}}</mat-label>
+                            <mat-select placeholder="Selecciona un tipo" multiple
+                                formControlName="proveedorGiroNegocio">
+                                <mat-option *ngFor="let item of giroProv" [value]="item.id">
+                                    {{ item.nombre }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="w-full">
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('erp.nomb.comer')}}</mat-label>
+                            <input matInput placeholder="-" formControlName="nombreComercial" />
+                        </mat-form-field>
+                    </div>
+
+                    <div class="w-full">
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('erp.pag.we')}}</mat-label>
+                            <input matInput placeholder="-" formControlName="paginaWeb" />
+                        </mat-form-field>
+                    </div>
+
+                    <div class="w-full">
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('general.email')}}</mat-label>
+                            <input matInput placeholder="-" formControlName="correo" />
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="columns-4">
+                    <div class="w-full" [hidden]="flg_tipo_pro == 1">
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('general.direccion')}}</mat-label>
+                            <input matInput placeholder="-" formControlName="direccion" placeholder="Dirección" />
+                        </mat-form-field>
+                    </div>
+
+                    <div class="w-full" *ngIf="!user.isAdmin">
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('registro.categoria')}}*</mat-label>
+                            <mat-select [formControlName]="'proveedorCategoria'"
+                                placeholder="{{t('registro.categoria')}}" (openedChange)="doUpdate($event)" multiple>
+                                <mat-option *ngFor="let item of category" [value]="item.id">{{item.nombre}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <ng-container *ngIf="user.isAdmin">
+                        <div class="w-full">
+                            <mat-form-field class="w-full fuse-mat-dense">
+                                <mat-label>{{t('general.estado_proveed')}}</mat-label>
+                                <mat-select placeholder="Selecciona un tipo" formControlName="idEstado">
+                                    <mat-option *ngFor="let item of estadoProv" [value]="item.id">{{ item.nombre
+                                        }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="w-full">
+                            <mat-form-field class="w-full fuse-mat-dense">
+                                <mat-label>{{t('registro.categoria')}}</mat-label>
+                                <textarea disabled name="" matInput id="">{{parsedCategories()}}</textarea>
+                            </mat-form-field>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+
+            <div class="bg-card px-3 py-4 w-full rounded mt-3" [hidden]="flg_tipo_pro != 1">
+                <h4 class="font-semibold mb-3 text-primary">{{t('ubigeo.subtitulo')}}</h4>
+                <hr class="my-4" />
+
+                <div class="columns-4">
+                    <div>
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('ubigeo.pais')}}</mat-label>
+                            <mat-select placeholder="Selecciona un tipo" formControlName="idPais">
+                                <mat-option *ngFor="let item of pais" [value]="item.id">{{ item.nombre }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('ubigeo.region')}}</mat-label>
+                            <mat-select placeholder="Selecciona una Región" formControlName="idRegion"
+                                (selectionChange)="getcargarProvincias($event.value)">
+                                <mat-option *ngFor="let item of regiones" [value]="item.id">{{ item.nombre
+                                    }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('ubigeo.provincia')}}</mat-label>
+                            <mat-select placeholder="Selecciona una Provincia" formControlName="idProvincia"
+                                (selectionChange)="getcargarDistritos($event.value)">
+                                <mat-option *ngFor="let item of provincias" [value]="item.id">{{ item.nombre
+                                    }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('ubigeo.distrito')}}</mat-label>
+                            <mat-select placeholder="Selecciona una Distrito" formControlName="idDistrito">
+                                <mat-option *ngFor="let item of distritos" [value]="item.id">{{ item.nombre
+                                    }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="columns-4">
+                    <div>
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('ubigeo.Direccion_fisc')}}</mat-label>
+                            <input matInput placeholder="-" formControlName="direccionFiscal" />
+                        </mat-form-field>
+                    </div>
+
+                    <div>
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('ubigeo.codigo_post')}}</mat-label>
+                            <input matInput placeholder="-" mask="000000" formControlName="codigoPostal" />
+                        </mat-form-field>
+                    </div>
+
+                    <div>
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('ubigeo.territ_regi')}}</mat-label>
+                            <input matInput placeholder="-" formControlName="region" />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-card px-3 py-4 w-full rounded mt-3" [hidden]="flg_tipo_pro != 1">
+                <h4 class="font-semibold mb-3 text-primary">{{t('sunat.subtitulo')}}</h4>
+                <hr class="my-4" />
+                <div class="flex w-full items-center gap-4">
+                    <div class="w-60">
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('sunat.correo_reten')}}</mat-label>
+                            <input matInput placeholder="-" formControlName="sunatCorreo" />
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-slide-toggle color="primary" formControlName="sunatActivo"> {{t('sunat.activo')}}
+                        </mat-slide-toggle>
+                    </div>
+
+                    <div>
+                        <mat-slide-toggle color="primary" formControlName="sunarHabido"> {{t('sunat.habido')}}
+                        </mat-slide-toggle>
+                    </div>
+                    <div class="w-60">
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('sunat.correo_trans')}}</mat-label>
+                            <input matInput placeholder="-" formControlName="correoDetraccion" />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-card px-3 py-4 w-full rounded mt-3">
+                <h4 class="font-semibold text-primary">{{t('grupo.titulo')}}</h4>
+
+                <hr class="my-4" />
+
+                <div class="columns-4">
+                    <div>
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('grupo.condicion-pag')}}</mat-label>
+                            <mat-select placeholder="Selecciona un tipo" formControlName="idCondicionPago">
+                                <mat-option *ngFor="let item of paymentConditions" [value]="item.id">
+                                    {{ item.nombre }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div>
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('grupo.moneda')}}</mat-label>
+                            <mat-select placeholder="Selecciona un tipo" formControlName="tipoMoneda" multiple>
+                                <mat-option *ngFor="let item of currency" [value]="item.id">{{ item.nombre
+                                    }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div>
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('grupo.tipo_compr')}}</mat-label>
+                            <mat-select placeholder="Selecciona un tipo" formControlName="tipoComprobante" multiple>
+                                <mat-option *ngFor="let item of voucherType" [value]="item.id">{{ item.nombre
+                                    }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="bg-card px-3 py-4 w-full rounded mt-3">
+                <h4 class="font-semibold text-primary">{{t('venta.titulo')}}</h4>
+
+                <hr class="my-4" />
+
+                <div class="columns-5">
+                    <div>
+                        <mat-form-field class="w-full fuse-mat-dense">
+                            <mat-label>{{t('venta.operac_afec')}}</mat-label>
+                            <mat-select placeholder="Selecciona un tipo" formControlName="idOperacionesAfectadas">
+                                <mat-option *ngFor="let item of operationsType" [value]="item.id">{{ item.nombre
+                                    }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="pt-5">
+                        <mat-slide-toggle color="primary" [checked]="flgTipoVentaBienes"
+                            (change)="changeOption(1,$event)"> {{t('venta.tip_vent_bie')}} </mat-slide-toggle>
+                    </div>
+                    <div class="pt-5">
+                        <mat-slide-toggle color="primary" [checked]="flgTipoVentaServicio"
+                            (change)="changeOption(2,$event)"> {{t('venta.ventas_servicios')}} </mat-slide-toggle>
+                    </div>
+                    <div class="pt-5">
+                        <mat-slide-toggle color="primary" [checked]="flgTipoFacElect" (change)="changeOption(3,$event)">
+                            {{t('venta.tip_fac_elec')}}</mat-slide-toggle>
+                    </div>
+                    <div class="pt-5">
+                        <mat-slide-toggle color="primary" [checked]="flgTipoFacManual"
+                            (change)="changeOption(4,$event)"> {{t('venta.tip_fact_man')}} </mat-slide-toggle>
+                    </div>
+
+                </div>
+            </div> -->
+
+            <!-- <div class="flex justify-end mt-5">
+                <button mat-raised-button color="primary" *ngIf="user.isProvider"
+                    (click)="actualizar()">{{t('btn.actualizar_informacion')}}</button>
+            </div> -->
+        </form>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+[
+    {
+      "id": 0,
+      "nombre": "Existencia"
+    },
+    {
+      "id": 1,
+      "nombre": "Servicio"
+    },
+    {
+      "id": 2,
+      "nombre": "Gasto"
+    },
+    {
+      "id": 3,
+      "nombre": "Todos"
+    }
+  ]

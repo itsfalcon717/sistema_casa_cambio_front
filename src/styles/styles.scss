@@ -1,0 +1,41 @@
+/* ----------------------------------------------------------------------------------------------------- */
+/*  @ Import/write your custom styles here.
+/*  @ Styles from this file will override 'vendors.scss' and Fuse's base styles.
+/* ----------------------------------------------------------------------------------------------------- */
+
+// regular style toast
+@import 'ngx-toastr/toastr';
+
+
+
+.mat-mdc-form-field.mat-form-field-appearance-fill
+  .mat-mdc-text-field-wrapper
+  .mat-mdc-form-field-flex
+  .mat-mdc-form-field-infix {
+  font-size: 13px;
+}
+
+.mat-mdc-form-field.mat-form-field-appearance-fill .mat-mdc-text-field-wrapper {
+  border-radius: 3px !important;
+}
+
+.mat-mdc-form-field.mat-form-field-appearance-fill.fuse-mat-dense
+  .mat-mdc-text-field-wrapper
+  .mat-mdc-form-field-flex
+  .mat-mdc-form-field-infix {
+  font-size: 13px;
+}
+
+.mat-mdc-form-field.mat-form-field-appearance-fill
+  .mat-mdc-text-field-wrapper
+  .mat-mdc-form-field-flex
+  .mat-mdc-form-field-infix
+  .mat-mdc-floating-label {
+  font-size: 13px;
+  top: -20px !important;
+}
+
+
+td, input, select {
+    text-transform: uppercase !important;
+}

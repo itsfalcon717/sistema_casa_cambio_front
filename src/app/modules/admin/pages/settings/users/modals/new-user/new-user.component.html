@@ -1,0 +1,65 @@
+<div class="w-full mx-auto sm:mx-0" *transloco="let t">
+    <div class=" mt-2 text-2xl font-extrabold tracking-tight leading-tight">{{ data.title == 'Nuevo Usuario'? t('users.modal.titleCrear') : t('users.modal.titleEdit') }}</div>
+    <form class="mt-8" [formGroup]="fg">
+        <div  class="columns-2 w-full">
+            <div>
+                <mat-form-field class="w-full fuse-mat-dense">
+                    <mat-label>{{t('users.modal.rol')}}</mat-label>
+                    <mat-select [formControlName]="'rol'" placeholder="rol" >
+                        <mat-option *ngFor="let item of rol.data" [value]="item.id">{{item.nombre}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                
+                    <mat-form-field class="w-full fuse-mat-dense">
+                        <mat-label>{{t('users.modal.area')}}</mat-label>
+                        <input id="company-confirm" matInput [formControlName]="'area'" placeholder="{{t('registro.area')}}">
+                    </mat-form-field>
+              
+                <!-- <mat-form-field class="w-full fuse-mat-dense">
+                    <mat-label>{{t('users.modal.proveedor')}}</mat-label>
+                    <mat-select [formControlName]="'proveedor'" placeholder="proveedor" >
+                        <mat-option *ngFor="let item of proveedor" [value]="item.id">{{item.razonSocial}}</mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+            </div>
+        </div>
+        <div  class="columns-2 w-full">
+            <div>
+                <mat-form-field class="w-full fuse-mat-dense">
+                    <mat-label>{{t('users.modal.usuario')}}</mat-label>
+                    <input id="usuario" matInput [formControlName]="'usuario'" placeholder="-">
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field class="w-full fuse-mat-dense">
+                    <mat-label>{{t('users.modal.correo')}}</mat-label>
+                    <input id="company-confirm" class="normal-case" matInput [formControlName]="'correo'" placeholder="{{t('registro.email_contacto')}}">
+                </mat-form-field>
+            </div>
+        </div>
+        <div  class="columns-2 w-full">
+            <div>
+                <mat-form-field class="w-full fuse-mat-dense">
+                    <mat-label>{{t('users.modal.nombres')}}</mat-label>
+                    <input id="email" matInput [formControlName]="'nombres'" placeholder="{{t('registro.nombre_contacto')}}">
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field class="w-full fuse-mat-dense">
+                    <mat-label>{{t('users.modal.apellidos')}}</mat-label>
+                    <input id="email" matInput [formControlName]="'apellidos'" placeholder="{{t('registro.apellido_contacto')}}">
+                </mat-form-field>
+            </div>
+        </div>
+  
+        <button type="button" class="fuse-mat-button-large w-full mt-6" mat-flat-button [color]="'primary'"
+            [disabled]="fg.invalid" (click)="doRegister()">
+            <span *ngIf="!fg.disabled">
+                {{ data.title == 'Nuevo Usuario'? t('users.modal.btnCrear') : t('users.modal.btnEditar') }}
+            </span>
+            <mat-progress-spinner *ngIf="fg.disabled" [diameter]="24" [mode]="'indeterminate'"></mat-progress-spinner>
+        </button>
+    </form>
+</div>

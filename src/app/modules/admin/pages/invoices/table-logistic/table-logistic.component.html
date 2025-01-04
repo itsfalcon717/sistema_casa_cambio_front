@@ -1,0 +1,64 @@
+<ng-container *transloco="let t">
+    <table mat-table [dataSource]="dataSource" class="w-full">
+        <ng-container matColumnDef="nroSolped">
+            <th mat-header-cell *matHeaderCellDef>{{ t('migohes.table.th1') }}</th>
+            <td mat-cell *matCellDef="let element">{{element.numeroGuia}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="numeroGuia">
+            <th mat-header-cell *matHeaderCellDef>{{ t('migohes.table.th1') }}</th>
+            <td mat-cell *matCellDef="let element">{{element.numeroGuia}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="opGuiaCompra">
+            <th mat-header-cell *matHeaderCellDef>{{t('migohes.table.th2')}}</th>
+            <td mat-cell *matCellDef="let element">{{element.opGuiaCompra}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="opSolicitudCompra">
+            <th mat-header-cell *matHeaderCellDef>{{t('migohes.table.th3')}}</th>
+            <td mat-cell *matCellDef="let element">{{element.opSolicitudCompra}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="nombreProveedor">
+            <th mat-header-cell *matHeaderCellDef>{{t('migohes.table.th4')}}</th>
+            <td mat-cell *matCellDef="let element">{{element.nombreProveedor}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="fechaGuiaCompra">
+            <th mat-header-cell *matHeaderCellDef>{{t('migohes.table.th5')}}</th>
+            <td mat-cell *matCellDef="let element">{{element.fechaGuiaCompra}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="moneda">
+            <th mat-header-cell *matHeaderCellDef>{{t('migohes.table.currency')}}</th>
+            <td mat-cell *matCellDef="let element">{{element.moneda}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="estadoGuia">
+            <th mat-header-cell *matHeaderCellDef>{{t('migohes.table.th6')}}</th>
+            <td mat-cell *matCellDef="let element">{{element.estadoGuia}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>{{t('eva.acciones')}}</th>
+            <td mat-cell *matCellDef="let element">
+                <div class="flex justify-start">
+                    <a [routerLink]="['/invoices/detail/'+society+'/'+element.opGuiaCompra]"  [queryParams]="{opOrdenCompra: element.opOrdenCompra, opGuiaCompra: element.opGuiaCompra}"
+                        routerLinkActive="router-link-active">
+                        <button mat-mini-fab style="transform: scale(.8);">
+                            <mat-icon>visibility</mat-icon>
+                        </button>
+                    </a>
+                </div>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <div class="w-full justify-end">
+        <mat-paginator showFirstLastButtons [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+    </div>
+</ng-container>
