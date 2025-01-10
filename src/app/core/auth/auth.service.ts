@@ -62,31 +62,49 @@ export class AuthService {
     if (this._authenticated) {
       return throwError('User is already logged in.')
     }
-
+  
     return this._httpClient.post(environment.auth.login, credentials).pipe(
+      // Manejo de la respuesta de la solicitud HTTP
       switchMap((response: any) => {
-        // Store the access token in the local storage
-        this.accessToken = response.token
-        localStorage.setItem('token', this.accessToken)
-        // Set the authenticated flag to true
-        this._authenticated = true
-        // Return a new observable with the response
-        return of(response)
+        // Extraer el token de la respuesta
+        const token = response.token;
+  
+        if (token) {
+          // Almacenar el token en localStorage
+          localStorage.setItem('token', token);
+  
+          // Decodificar el token JWT
+          const decoded: any = jwtDecode(token);
+  
+          // Almacenar la información del usuario y de configuración en localStorage
+          localStorage.setItem('cambio', JSON.stringify(decoded.cambio));
+          localStorage.setItem('menus', decoded.menus);
+  
+          // Configurar la respuesta de autenticación en la clase
+          this.authResponse = decoded;
+          this.changeCambio = decoded.cambio;
+          this.menu = decoded.menus;
+  
+          // Establecer el estado de autenticación a true
+          this._authenticated = true;
+          const user = {
+            ...response.data,
+            ...this.authResponse,
+          }
+          this._userService.user = user
+          localStorage.setItem('userData', JSON.stringify(user))
+          // Retornar la respuesta de login, o cualquier valor adicional que necesites
+          return of(response);  // Puedes devolver los datos o algún otro valor relevante
+        }
+  
+        // Si no hay token en la respuesta, lanzar un error
+        return throwError('Authentication failed. No token received.');
       }),
-      switchMap((response: any) => {
-        const decoded: any = jwtDecode(this.accessToken)
-        this.changeCambio = decoded.cambio
-        this.menu=decoded.menus
-        localStorage.setItem('cambio',JSON.stringify(this.changeCambio))
-      //   this.menu.forEach(menu => {
-      //     menu.idPerfil = menu.idPerfil.split(',').map(id => parseInt(id));
-      // });
-        localStorage.setItem('menus', this.menu)
-        this.authResponse = decoded
-        // this.getChangePass(decoded.cambio)
-        return this.getById(decoded.idProveedor)
+      catchError((error) => {
+        // Capturar cualquier error y retornar un mensaje adecuado
+        return throwError(error.message || 'An error occurred during authentication.');
       })
-    )
+    );
   }
 
   transformMenuJson(menuJson: any): any {

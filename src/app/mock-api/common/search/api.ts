@@ -27,22 +27,40 @@ export class SearchMockApi
         this.registerHandlers(menu);
     }
     transformMenuJson(menuJson: any): any {
-        if (Array.isArray(menuJson)) {
-            return menuJson.map(item => {
-              // Transformar idPerfil a un array de números
-              item.idPerfil = item.idPerfil.map(profile => profile.idPerfil);
+        // Imprimir para ver qué se recibe en el argumento
+        console.log("Received menuJson:", menuJson);
+        console.log("Type of menuJson:", typeof menuJson);
         
-              // Transformar idPerfil en submenús
-              if (item.children && item.children.length > 0) {
-                item.children = item.children.map(child => {
-                  child.idPerfil = child.idPerfil.map(profile => profile.idPerfil);
-                  return child;
-                });
-              }
-        
-              return item;
-            });
+        // Si el valor recibido es un string, intentar parsearlo
+        if (typeof menuJson === 'string') {
+          try {
+            menuJson = JSON.parse(menuJson);  // Parseamos el JSON si es un string
+          } catch (e) {
+            console.error('Error parsing JSON:', e);
+            return [];  // Si ocurre un error, devolvemos un array vacío
           }
+        }
+      
+        // Ahora verificamos si es un array
+        if (Array.isArray(menuJson)) {
+          return menuJson.map(item => {
+            // Transformar idPerfil a un array de números
+            item.idPerfil = item.idPerfil.map(profile => profile.idPerfil);
+      
+            // Transformar idPerfil en submenús
+            if (item.children && item.children.length > 0) {
+              item.children = item.children.map(child => {
+                child.idPerfil = child.idPerfil.map(profile => profile.idPerfil);
+                return child;
+              });
+            }
+      
+            return item;
+          });
+        } else {
+          console.error('menuJson is not an array:', menuJson);
+          return [];  // Si no es un array, devolvemos un array vacío
+        }
       }
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods

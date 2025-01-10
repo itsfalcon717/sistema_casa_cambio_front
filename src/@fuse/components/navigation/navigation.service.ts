@@ -95,25 +95,28 @@ export class FuseNavigationService
      * @param navigation
      * @param flatNavigation
      */
-    getFlatNavigation(navigation: FuseNavigationItem[], flatNavigation: FuseNavigationItem[] = []): FuseNavigationItem[]
-    {
-        for ( const item of navigation )
-        {
-            if ( item.type === 'basic' )
-            {
+    getFlatNavigation(navigation: FuseNavigationItem[], flatNavigation: FuseNavigationItem[] = []): FuseNavigationItem[] {
+        // Validar si navigation es undefined o no es un array
+        if (!Array.isArray(navigation)) {
+            console.warn('Invalid navigation provided');
+            return flatNavigation; // Retornar un array vacío si navigation no es válido
+        }
+    
+        // Iterar sobre los elementos de navigation
+        for (const item of navigation) {
+            if (item.type === 'basic') {
                 flatNavigation.push(item);
                 continue;
             }
-
-            if ( item.type === 'aside' || item.type === 'collapsable' || item.type === 'group' )
-            {
-                if ( item.children )
-                {
+    
+            if (item.type === 'aside' || item.type === 'collapsable' || item.type === 'group') {
+                if (item.children) {
+                    // Recursión para los hijos
                     this.getFlatNavigation(item.children, flatNavigation);
                 }
             }
         }
-
+    
         return flatNavigation;
     }
 

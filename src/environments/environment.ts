@@ -1,5 +1,5 @@
 const HOST = 'https://as-ge-qas-silver-esupp.azurewebsites.net'
-//const HOST = 'https://localhost:7013'
+//const HOST = 'https://localhost:5055'
 const API = '/api'
 const API_VERSION = ''
 

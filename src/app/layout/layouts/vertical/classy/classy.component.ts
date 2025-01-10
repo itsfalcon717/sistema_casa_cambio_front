@@ -94,17 +94,17 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         this.updateNavigationTitles();
       });
     // Subscribe to the user service
-    this._userService.user$.pipe(takeUntil(this._unsubscribeAll)).subscribe((user: User) => {
-      this.user = user
-    })
+    // this._userService.user$.pipe(takeUntil(this._unsubscribeAll)).subscribe((user: User) => {
+    //   this.user = user
+    // })
 
     // Subscribe to media changes
-    this._fuseMediaWatcherService.onMediaChange$
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(({ matchingAliases }) => {
-        // Check if the screen is small
-        this.isScreenSmall = !matchingAliases.includes('md')
-      })
+    // this._fuseMediaWatcherService.onMediaChange$
+    //   .pipe(takeUntil(this._unsubscribeAll))
+    //   .subscribe(({ matchingAliases }) => {
+    //     // Check if the screen is small
+    //     this.isScreenSmall = !matchingAliases.includes('md')
+    //   })
   }
   // Método para actualizar los títulos de navegación
   async updateNavigationTitles() {
@@ -120,28 +120,42 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         }
       })
       this.navigation = menu
+      console.log("==>",this.navigation)
     }
         // console.log("==>",navigation)
       // })
   }
   transformMenuJson(menuJson: any): any {
     if (Array.isArray(menuJson)) {
-        return menuJson.map(item => {
-          // Transformar idPerfil a un array de números
+      return menuJson.map(item => {
+        // Validar que item.idPerfil no sea undefined ni null
+        if (item.idPerfil && Array.isArray(item.idPerfil)) {
           item.idPerfil = item.idPerfil.map(profile => profile.idPerfil);
-    
-          // Transformar idPerfil en submenús
-          if (item.children && item.children.length > 0) {
-            item.children = item.children.map(child => {
+        } else {
+          console.warn('item.idPerfil is undefined or null for item:', item);
+        }
+  
+        // Transformar idPerfil en submenús si existen children
+        if (item.children && item.children.length > 0) {
+          item.children = item.children.map(child => {
+            // Validar que child.idPerfil no sea undefined ni null
+            if (child.idPerfil && Array.isArray(child.idPerfil)) {
               child.idPerfil = child.idPerfil.map(profile => profile.idPerfil);
-              return child;
-            });
-          }
-    
-          return item;
-        });
-      }
+            } else {
+              console.warn('child.idPerfil is undefined or null for child:', child);
+            }
+            return child;
+          });
+        }
+  
+        return item;
+      });
+    } else {
+      console.error('The provided menuJson is not an array:', menuJson);
+      return []; // Si no es un array, devolvemos un array vacío
+    }
   }
+  
 
   showProfile() {
     const $ = this._matDialog.open(NewCambioContraComponent, {
@@ -151,8 +165,14 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
     $.afterClosed().subscribe((resp) => {
       if (resp.statusCode == 200) {
         localStorage.setItem('cambio', JSON.stringify('True'))
-
-        this._router.navigate(['/providers/info'])
+        const jsonData = JSON.parse(localStorage.getItem('menus'));
+        jsonData.forEach(group => {
+          if (group.children && group.children.length > 0) {
+            const firstLink = group.children[0].link;
+            this._router.navigate([firstLink])
+          }
+        });
+       
       }
     })
   }

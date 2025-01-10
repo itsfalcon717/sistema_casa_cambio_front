@@ -4,11 +4,11 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 const generatePalette = require(path.resolve(__dirname, 'src/@fuse/tailwind/utils/generate-palette'))
 
 const customPalettes = {
-  brand: generatePalette('#7a9a01'),
+  brand: generatePalette('#FEC331'),
 }
 
 const customAccent = {
-  slate: generatePalette('#115740'),
+  slate: generatePalette('#003366'),
 }
 
 /**
